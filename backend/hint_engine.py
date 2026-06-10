@@ -46,16 +46,15 @@ def build_prompt(problem_text: str, pattern: str, confidence: float) -> str:
 
 
 def parse_response(raw_text: str) -> dict:
-    # All three AIs are forced to return JSON by our prompt
-    # But sometimes they wrap it in markdown code blocks like ```json ... ```
-    # This function strips that out and parses cleanly
     clean = raw_text.strip()
     if clean.startswith("```"):
-        # Remove opening ```json or ``` and closing ```
         clean = clean.split("\n", 1)[-1]
         clean = clean.rsplit("```", 1)[0]
-    return json.loads(clean.strip())
-
+    clean = clean.strip()
+    # Remove invalid control characters that break JSON parsing
+    import re
+    clean = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]', '', clean)
+    return json.loads(clean)
 
 async def get_hints_claude(problem_text: str, pattern: str, confidence: float) -> dict:
     prompt = build_prompt(problem_text, pattern, confidence)
