@@ -4,6 +4,13 @@ __pycache__/
 *$py.class
 *.pyc
 
+backend/models/*.pkl
+backend/venv/
+backend/.env
+frontend/.env.local
+frontend/node_modules/
+
+
 # C extensions
 *.so
 

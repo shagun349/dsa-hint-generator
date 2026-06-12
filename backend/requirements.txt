@@ -6,3 +6,5 @@ google-generativeai
 scikit-learn
 python-dotenv
 pyyaml
+sentence-transformers
+pandas
